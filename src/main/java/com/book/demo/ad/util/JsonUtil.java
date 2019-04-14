@@ -1,5 +1,9 @@
 package com.book.demo.ad.util;
 
+import java.io.IOException;
+import java.io.StringWriter;
+import java.text.SimpleDateFormat;
+
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.JsonGenerator;
 import org.codehaus.jackson.JsonParseException;
@@ -8,23 +12,44 @@ import org.codehaus.jackson.map.DeserializationConfig;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.SerializationConfig;
-import org.codehaus.jackson.map.annotate.JsonSerialize;
+import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
 import org.codehaus.jackson.type.JavaType;
 import org.codehaus.jackson.type.TypeReference;
 
-import java.io.IOException;
-import java.io.StringWriter;
-import java.text.SimpleDateFormat;
-
+/**
+ * @描述 : json工具类
+ * @创建者：liushengsong
+ * @创建时间： 2014-6-5上午10:26:48
+ *
+ */
 public class JsonUtil {
     private static final String DATEFORMAT = "yyyy-MM-dd HH:mm:ss";
     private static final ObjectMapper OBJECTMAPPER = new ObjectMapper();
 
+    /**
+     * @描述 : 获取对象的json格式字符串默认不格式化
+     * @创建者：liushengsong
+     * @创建时间： 2014-6-5上午10:19:19
+     *
+     * @param entity
+     * @return
+     */
     public static String toJson(Object entity) {
         return toJson(entity, false);
     }
 
-    public static String toJson(Object entity, boolean prettyPrint) throws RuntimeException {
+    /**
+     * @描述 : 获取对象的json格式字符串可设置是否格式化
+     * @创建者：liushengsong
+     * @创建时间： 2014-6-5上午10:19:38
+     *
+     * @param entity
+     * @param prettyPrint
+     * @return
+     * @throws RuntimeException
+     */
+    public static String toJson(Object entity, boolean prettyPrint)
+            throws RuntimeException {
         try {
             StringWriter sw = new StringWriter();
             JsonGenerator jg = OBJECTMAPPER.getJsonFactory()
@@ -46,6 +71,16 @@ public class JsonUtil {
         }
     }
 
+    /**
+     * @描述 : 获取json字符串的对象
+     * @创建者：liushengsong
+     * @创建时间： 2014-6-5上午10:21:32
+     *
+     * @param str
+     * @param clazz
+     * @return
+     * @throws RuntimeException
+     */
     public static <T> T fromJson(String str, Class<T> clazz)
             throws RuntimeException {
         try {
@@ -133,7 +168,7 @@ public class JsonUtil {
                 new SimpleDateFormat(DATEFORMAT));
         /** 设置转换时忽略空值 **/
         OBJECTMAPPER.getSerializationConfig().withSerializationInclusion(
-                JsonSerialize.Inclusion.NON_NULL);
+                Inclusion.NON_NULL);
         /** 设置反转时日期类型格式 **/
         OBJECTMAPPER.getDeserializationConfig().withDateFormat(
                 new SimpleDateFormat(DATEFORMAT));

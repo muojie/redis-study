@@ -2,11 +2,25 @@ package com.book.demo.ad.model;
 
 import java.io.Serializable;
 
+/**
+ * @描述 : 商品信息
+ */
 public class Goods implements Serializable {
-
+    /**
+     * 商品ID
+     **/
     private int id;
+    /**
+     * 商品基本信息
+     **/
     private String goodsInfo;
+    /**
+     * 规格信息
+     **/
     private String specificationsInfo;
+    /**
+     * 广告信息
+     **/
     private String adInfo;
 
     public int getId() {

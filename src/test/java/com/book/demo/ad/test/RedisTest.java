@@ -20,16 +20,18 @@ public class RedisTest {
     private Jedis jedis;
 
     @Before
+    // 注解before 表示在方法前执行
     public void initJedis() throws IOException {
         jedis = RedisUtil.initPool().getResource();
     }
-    @Test(timeout = 1000)
 
+    @Test(timeout = 1000)
+    // timeout表示该测试方法执行超过1s会抛出异常
     public void saveAdTest() {
-        Pipeline pipeline = jedis.pipelined();
+        Pipeline pipeline = jedis.pipelined();          // 开启redis管道
         pipeline.setex(SafeEncoder.encode("test"), 10 * 60,
                 TranscoderUtils.encodeObject(this.initAdvertisement()));
-        System.out.println(((Pipeline) pipeline).syncAndReturnAll());
+        System.out.println(((Pipeline) pipeline).syncAndReturnAll());   // 提交本次操作
     }
 
     @Test(timeout = 1000)
@@ -120,6 +122,9 @@ public class RedisTest {
         jedis.close();
     }
 
+    /**
+     * @描述 : 初始化广告数据
+     * */
     private Advertisement initAdvertisement() {
         Template template = new Template();
         template.setId(20);
@@ -152,6 +157,9 @@ public class RedisTest {
         return advertisement;
     }
 
+    /**
+     * @描述 : 初始化商品信息
+     */
     private String[] initGoods() {
         Goods goods = new Goods();
         goods.setAdInfo("<html></html>");
@@ -159,7 +167,7 @@ public class RedisTest {
         goods.setSpecificationsInfo("主体系列飞行堡垒型号FX53VD颜色红黑平台Intel操作系统操作系统Windows 10家庭版处理器CPU类型Intel 第7代 酷睿CPU速度2.5GHz三级缓存6M其它说明I5-7300HQ芯片组芯片组其它　");
         String[] goodsArray = new String[20];
         for (int i = 0; i < 20; i++) {
-            goods.setId(200000+i);
+            goods.setId(200000 + i);
             goodsArray[i] = JsonUtil.toJson(goods);
         }
         return goodsArray;
@@ -182,6 +190,9 @@ public class RedisTest {
         return map;
     }
 
+    /**
+     * @描述 : 初始化商品日志
+     */
     private String[] initGoodsLog() {
         GoodsLog goodsLog1 = new GoodsLog();
         goodsLog1.setClickDate(new Date());
